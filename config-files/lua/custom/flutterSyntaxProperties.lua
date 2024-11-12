@@ -21,7 +21,7 @@ local words_to_highlight, err = readWordFromFile(filename)
 
 if words_to_highlight then
   vim.cmd([[
-    highlight CustomProperties guifg=#fa5c19 gui=bold
+    highlight CustomProperties guifg=#ff8c73 gui=bold
   ]])
 
   for _, word in ipairs(words_to_highlight) do
