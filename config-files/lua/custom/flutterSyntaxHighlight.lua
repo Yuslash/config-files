@@ -7,7 +7,6 @@ local words_to_highlight = {
   "setState",
   "State",
   "Scaffold",
-  "Container",
   "Build",
 }
 
