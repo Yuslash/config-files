@@ -7,6 +7,10 @@ _G.remove_flutter_text_widget = function()
   else
     print("No Text Widget found on the current line")
   end
+
+  if vim.api.nvim_win_is_valid(win_id) then
+    vim.api.nvim_win_close(win_id, true)
+  end
 end
 
 local function open_simple_panel()
@@ -21,7 +25,6 @@ local function open_simple_panel()
     "Remove Text",
   })
 
-  vim.bo[buf].modifiable = false
   vim.bo[buf].buftype = "nofile"
 
   local win_id = vim.api.nvim_open_win(buf, true, {
@@ -34,11 +37,13 @@ local function open_simple_panel()
     border = "rounded",
   })
 
+  _G.win_id = win_id
+
   vim.api.nvim_buf_set_keymap(
     buf,
     "n",
     "<CR>",
-    string.format("<Cmd>lua _G.remove_flutter_text_widget()<CR> | lua vim.api.nvim_win_close(%d, true)<CR>", win_id),
+    string.format("lua vim.api.nvim_win_close(%d, true)<CR><Cmd>lua _G.remove_flutter_text_widget()<CR>", win_id),
     {
       noremap = true,
       silent = true,
