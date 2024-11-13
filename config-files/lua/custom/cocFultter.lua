@@ -1,15 +1,33 @@
 _G.remove_flutter_text_widget = function()
-  vim.api.nvim_command("wincmd p")
+  local buffer = vim.api.nvim_get_current_buf()
+  local start_line = vim.fn.line(".") - 1
+  local total_lines = vim.api.nvim_buf_line_count(buffer)
 
-  local current_line = vim.api.nvim_get_current_line()
-  if string.match(current_line, "Text%(%s*.*%s*%)") then
-    vim.api.nvim_command("normal! dd")
-  else
+  local current_line_text = vim.api.nvim_get_current_line()
+  if not current_line_text:match("^%s*Text%s*%(") then
     print("No Text Widget found on the current line")
+    return
   end
 
-  if vim.api.nvim_win_is_valid(win_id) then
-    vim.api.nvim_win_close(win_id, true)
+  local open_bracket = 1
+  local end_line = start_line
+
+  while end_line < total_lines and open_bracket > 0 do
+    local line_text = vim.api.nvim_buf_get_lines(buffer, end_line, end_line + 1, false)[1]
+
+    open_bracket = open_bracket + select(2, line_text:gsub("%(", ""))
+    open_bracket = open_bracket - select(2, line_text:gsub("%)", ""))
+
+    end_line = end_line + 1
+  end
+
+  vim.api.nvim_buf_set_lines(buffer, start_line, end_line, false, {})
+  print("Text Widget Removed")
+
+  vim.api.nvim_command("wincmd p")
+
+  if _G.win_id and vim.api.nvim_win_is_valid(win_id) then
+    vim.api.nvim_win_close(_G.win_id, true)
   end
 end
 
