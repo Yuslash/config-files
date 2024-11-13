@@ -8,3 +8,5 @@ end
 vim.api.nvim_create_user_command("RemoveText", remove_flutter_text_widget, {})
 
 vim.api.nvim_set_keymap("n", "<leader>rt", ":RemoveText<CR>", { noremap = true, silent = true })
+
+--This is code will Remoev the Text widget
