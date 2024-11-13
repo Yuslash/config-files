@@ -38,8 +38,11 @@ local function open_simple_panel()
     buf,
     "n",
     "<CR>",
-    "<Cmd>lua _G.remove_flutter_text_widget()<CR> | :wq<CR>",
-    { noremap = true, silent = true }
+    string.format("<Cmd>lua _G.remove_flutter_text_widget()<CR> | lua vim.api.nvim_win_close(%d, true)<CR>", win_id),
+    {
+      noremap = true,
+      silent = true,
+    }
   )
 end
 
