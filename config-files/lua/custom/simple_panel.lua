@@ -1,12 +1,16 @@
 local function open_simple_panel()
   local width = 30
-  local height = 5
+  local height = 6
   local row = math.floor((vim.o.lines - height) / 2)
   local col = math.floor((vim.o.columns - width) / 2)
 
   local buf = vim.api.nvim_create_buf(false, true)
 
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "hello from the panel" })
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, {
+    "hello from the panel",
+    "this is second line",
+    "this is third line",
+  })
 
   vim.api.nvim_open_win(buf, true, {
     relative = "editor",
